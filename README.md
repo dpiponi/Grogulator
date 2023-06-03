@@ -5,7 +5,7 @@ Initial checkin. Not really set up for general use.
 Code still contains pieces from Garmin sample code that ought
 to be deleted...
 
-![Grogulator](grogulator.gif?raw=true "Grogulator")
+![Grogulator](grogulator.gif?raw=true "Grogulator" | width = 256)
 
 A very simple Grogu themed watchface written in Monkey C.
 Only tested on Forerunner 55.
