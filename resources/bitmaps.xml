@@ -1,0 +1,4 @@
+<resources>
+    <bitmap id="bitmap_id" filename="grogu.png" />
+    <bitmap id="knob_id" filename="knob.png" />
+</resources>
