@@ -22,10 +22,12 @@ class GrogulatorView extends WatchUi.WatchFace {
     // Load your resources here
     function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.WatchFace(dc));
+
         grogu = Application.loadResource( Rez.Drawables.bitmap_id ) as BitmapResource;
         font = Application.loadResource( Rez.Fonts.font_id ) as FontResource;
         //smallfont = Application.loadResource( Rez.Fonts.smallfont_id ) as FontResource;
         knob = Application.loadResource( Rez.Drawables.knob_id ) as BitmapResource;
+
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -36,37 +38,51 @@ class GrogulatorView extends WatchUi.WatchFace {
 
     function drawDisplay(dc as Dc, x as Float, y as Float) as Void {
         // Draw background and Grogu bitmap
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
-        dc.clear();
-        dc.drawBitmap(120, 120, grogu);
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        //dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        //dc.clear();
 
         // Display time
         var clockTime = System.getClockTime();
         var timeString = Lang.format("$1$:$2$", [clockTime.hour, clockTime.min.format("%02d")]);
-        dc.drawText(104, 90, font, timeString,
-                    Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
-
-        // Display date
         var DDD = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
-        //var date = Gregorian.
         var dateString = Lang.format("$1$ $2$", [DDD.month, DDD.day.format("%02d")]);
-        dc.drawText(104, 58, Graphics.FONT_SYSTEM_TINY, dateString,
-                    Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+
+        var z = View.findDrawableById("TimeLabel");
+        (z as Text).setText(timeString);
+        var z2 = View.findDrawableById("DateLabel");
+        (z2 as Text).setText(dateString);
+
+        View.onUpdate(dc);
+
+        dc.drawBitmap(120, 120, grogu);
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
 
         // Display battery
         var batteryLevel = System.getSystemStats().battery;
 
+        var stepsX = 24;
+        var stepsY = 139;
+        var hrX = 48;
+        var hrY = 171;
+
+        var meterX = 77;
+        var meterY = 34;
+
         // Display steps
-        var cadenceString = Lang.format("$1$ steps", [ActivityMonitor.getInfo().steps]);
-        dc.drawText(104, 34, Graphics.FONT_SMALL, cadenceString,
-                    Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+        var cadenceString = Lang.format("steps $1$", [ActivityMonitor.getInfo().steps]);
+        // cadenceString = "steps 10905";
+        dc.drawText(stepsX, stepsY, Graphics.FONT_TINY, cadenceString,
+                    Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
+
+        // Display heart rate
+        var heartRateString = Lang.format("hr $1$", [Activity.getActivityInfo().currentHeartRate]);
+        // heartRateString = "hr 143";
+        dc.drawText(hrX, hrY, Graphics.FONT_TINY, heartRateString,
+                    Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
         var meterWidth = 40;
         var meterHeight = 12;
         var lowLevel = 20;
-        var meterX = 32;
-        var meterY = 150;
 
         // the bar itself
         if (batteryLevel < lowLevel)
@@ -95,6 +111,7 @@ class GrogulatorView extends WatchUi.WatchFace {
 
         // Knob
         dc.drawBitmap(x, y, knob);
+
     }
 
     // Update the view

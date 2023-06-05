@@ -1,3 +1,6 @@
 <layout id="WatchFace">
-    <label id="TimeLabel" x="center" y="center" font="Graphics.FONT_LARGE" justification="Graphics.TEXT_JUSTIFY_CENTER" color="Graphics.COLOR_BLUE" />
+  <label id="TimeLabel" x="104" y="90" font="@Fonts.font_id"
+         justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" color="Graphics.COLOR_WHITE" />
+  <label id="DateLabel" x="104" y="58" font="Graphics.FONT_SYSTEM_TINY"
+         justification="Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER" color="Graphics.COLOR_WHITE" />
 </layout>
